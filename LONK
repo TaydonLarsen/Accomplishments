@@ -1,0 +1,1267 @@
+class Room:
+    def __init__(self,Description,RN,RE,RS,RW,LN,LE,LS,LW,ULN,ULE,ULS,ULW,Key,KeyDesc,KeyDesc2,Bomb,BombDesc,BombDesc2,Push,LSecret,Secret,Map,maproomdesc,MapDesc,Compass,compassroomdesc,CompassDesc,CompassDesc2):
+        self.__Description_Orig = Description
+        self.__Description = self.__Description_Orig
+        self.__RoomNorth = RN
+        self.__RoomEast = RE
+        self.__RoomSouth = RS
+        self.__RoomWest = RW
+        self.__LockNorth = LN
+        self.__LockEast = LE
+        self.__LockSouth = LS
+        self.__LockWest = LW
+        self.__UNLockNorth = ULN
+        self.__UNLockEast = ULE
+        self.__UNLockSouth = ULS
+        self.__UNLockWest = ULW
+        self.__Key = Key
+        self.__KeyDesc = KeyDesc
+        self.__KeyDesc2 = KeyDesc2
+        self.__Bomb = Bomb
+        self.__BombDesc = BombDesc
+        self.__BombDesc2 = BombDesc2
+        self.__Push = Push
+        self.__LockSecret=LSecret
+        self.__Secret = Secret
+        self.__Map = Map
+        self.__maproomdesc = maproomdesc
+        self.__MapDesc = MapDesc
+        self.__Compass = Compass
+        self.__compassroomdesc = compassroomdesc
+        self.__CompassDesc = CompassDesc
+        self.__CompassDesc2 = CompassDesc2
+    def Actions(self,Action,room,triforce):
+        global key
+        global bomb
+        global Compass
+        global DungeonMap
+        if 'UNLOCK' in Action:
+            if key > 0:
+                if 'NORTH' in Action:
+                    if self.__LockNorth == 'K':
+                        Unlock(Action,room)
+                        print('\nThe key slides into the lock\nBefore the door and key disapeer.\n')
+                        key-=1
+                        self.__LockNorth = 'N'
+                        self.__UNLockNorth = 'K'
+                elif 'EAST' in Action:
+                    if self.__LockEast == 'K':
+                        Unlock(Action,room)
+                        print('\nThe key slides into the lock\nBefore the door and key disapeer.\n')
+                        key-=1
+                        self.__LockEast = 'N'
+                        self.__UNLockEast = 'K'
+                elif 'SOUTH' in Action:
+                    if self.__LockSouth == 'K':
+                        Unlock(Action,room)
+                        print('\nThe key slides into the lock\nBefore the door and key disapeer.\n')
+                        key-=1
+                        self.__LockSouth = 'N'
+                        self.__UNLockSouth = 'K'
+                elif 'WEST' in Action:
+                    if self.__LockWest == 'K':
+                        Unlock(Action,room)
+                        print('\nThe key slides into the lock\nBefore the door and key disapeer.\n')
+                        key-=1
+                        self.__LockWest = 'N'
+                        self.__UNLockWest = 'K'
+                else:
+                    print('\nWhat Should I unlock.\n')
+            else:
+                print('\nNo Keys.\n')
+                input('(Press enter)')
+        elif 'BOMB' in Action:
+            if self.__Bomb == 'Y':
+                bomb+=1
+                self.__Bomb = 'N'
+                print()
+                print(self.__BombDesc2)
+                input('(Press enter)')
+            elif bomb > 0:
+                if 'NORTH' in Action:
+                    if self.__LockNorth == 'B':
+                        Bomb(Action,room)
+                        print('\nThe explosion causes the wall to break\n')
+                        bomb-=1
+                        self.__LockNorth = 'N'
+                        self.__UNLockNorth = 'B'
+                elif 'EAST' in Action:
+                    if self.__LockEast == 'B':
+                        Bomb(Action,room)
+                        print('\nThe explosion causes the wall to break\n')
+                        bomb-=1
+                        self.__LockEast = 'N'
+                        self.__UNLockEast = 'B'
+                elif 'SOUTH' in Action:
+                    if self.__LockSouth == 'B':
+                        Bomb(Action,room)
+                        print('\nThe explosion causes the wall to break\n')
+                        bomb-=1
+                        self.__LockSouth = 'N'
+                        self.__UNLockSouth = 'B'
+                elif 'WEST' in Action:
+                    if self.__LockWest == 'B':
+                        Bomb(Action,room)
+                        print('\nThe explosion causes the wall to break\n')
+                        bomb-=1
+                        self.__LockWest = 'N'
+                        self.__UNLockWest = 'B'
+                else:
+                    print('\nWhat Should I Bomb?\n')
+            else:
+                print('\nNo bombs.\n')
+                input('(Press enter)')
+        elif 'NORTH' in Action:
+            if self.__RoomNorth != 'N':
+                if self.__LockNorth == 'N':
+                    room = self.__RoomNorth
+                else:
+                    if self.__LockNorth == 'B':
+                        print('\nThere seems to be cracks in wall. \n')
+                    elif self.__LockNorth == 'K':
+                        print('\nThe door seems to be locked. \n')
+                    elif self.__LockNorth =='Triforce':
+                        if triforce == 'Y':
+                            room = 'end'
+                            return room
+                        else:
+                            print('The door seems to be blocked by some magic.')
+                    elif self.__LockNorth =='I':
+                        if Whistle == 'Y':
+                            room = self.__RoomNorth
+                            return room
+                        else:
+                            print('\nThe door seems to be blocked by some magic. \nYou seem to need some item in the dungeon. \n')
+                    input('(Press enter)')
+            else:
+                print("\nThere doesn't seem to be a door here.")
+                input('(Press enter)')
+        elif 'EAST' in Action:
+            if self.__RoomEast != 'N':
+                if self.__LockEast == 'N':
+                    room = self.__RoomEast
+                else:
+                    if self.__LockEast == 'B':
+                        print('\nThere seems to be cracks in wall. \n')
+                    elif self.__LockEast == 'K':
+                        print('\nThe door seems to be locked. \n')
+                    elif self.__LockEast =='Triforce':
+                        if triforce == 'Y':
+                            room = 'end'
+                            return room
+                        else:
+                            print('The door seems to be blocked by some magic.')
+                    elif self.__LockEast =='I':
+                        if Whistle == 'Y':
+                            room = self.__RoomEast
+                            return room
+                        else:
+                            print('\nThe door seems to be blocked by some magic. \nYou seem to need some item in the dungeon. \n')
+                    input('(Press enter)')
+            else:
+                print("\nThere doesn't seem to be a door here.")
+                input('(Press enter)')
+        elif 'SOUTH' in Action:
+            if self.__RoomSouth != 'N':
+                if self.__LockSouth == 'N':
+                    room = self.__RoomSouth
+                else:
+                    if self.__LockSouth == 'B':
+                        print('\nThere seems to be cracks in wall. \n')
+                    elif self.__LockSouth == 'K':
+                        print('\nThe door seems to be locked. \n')
+                    elif self.__LockSouth =='Triforce':
+                        if triforce == 'Y':
+                            room = 'end'
+                            return room
+                        else:
+                            print('The door seems to be blocked by some magic.')
+                    elif self.__LockSouth =='I':
+                        if Whistle == 'Y':
+                            room = self.__RoomNorth
+                            return room
+                        else:
+                            print('\nThe door seems to be blocked by some magic. \nYou seem to need some item in the dungeon. \n')
+                    input('(Press enter)')
+            else:
+                print("There doesn't seem to be a door here")
+                input('(Press enter)')
+        elif 'WEST' in Action:
+            if self.__RoomWest != 'N':
+                if self.__LockWest == 'N':
+                    room = self.__RoomWest
+                else:
+                    if self.__LockWest == 'B':
+                        print('There seems to be cracks in wall. \n')
+                    elif self.__LockWest == 'K':
+                        print('The door seems to be locked. \n')
+                    elif self.__LockWest =='Triforce':
+                        if triforce == 'Y':
+                            room = 'end'
+                            return room
+                        else:
+                            print('The door seems to be blocked by some magic.')
+                    elif self.__LockWest =='I':
+                        if Whistle == 'Y':
+                            room = self.__RoomNorth
+                            return room
+                        else:
+                            print('The door seems to be blocked by some magic. \nYou seem to need some item in the dungeon. \n')
+                    input('(Press enter)')
+            else:
+                print("There doesn't seem to be a door here")
+                input('(Press enter)')
+        elif 'PUSH' in Action:
+            if self.__Push != 'N':
+                if self.__Push in Action:
+                    self.__Push = 'N'
+                    self.__LockSecret = 'N'
+                    print('\nThe block seems to shift to the side')
+                    print('\nA Ladder is seemingly revealed\n')
+                    input('(Press enter)')
+            return room
+        elif 'KEY' in Action:
+            if self.__Key == 'Y':
+                key+=1
+                self.__Key = 'N'
+                print()
+                print(self.__KeyDesc2)
+            else:
+                print()
+                print('There is no Key here.\n')
+            input('(Press enter)')
+        elif 'LADDER' in Action:
+            if self.__LockSecret == 'N':
+                room = self.__Secret
+        elif 'MENU' in Action:
+            print('\n\nMovement actions.\n\nNorth: Moves North.\n'+
+                  'South: Moves South.\nEast: Moves East.\n'+
+                  'West: Moves West.\nLadder(1-2): goes down or up a Ladder. \n\n')
+            print('Use Actions\n\nBomb: Blows up a wall.\n'+
+                  'Unlock: Unlocks a door.\nPush: Pushs a Pushable object.\n'+
+                  'Map: shows map.\nCompass: Points in a direction you probably should go.\n\n')
+            print('Collection Actions.\n\nBomb:(This action will collect any bombs in a room before being able to explode a wall)'
+                  '\nKey: Grabs a Key. \nGrab:Grabs an item(Not Key or bomb).\n')
+            input('(Press enter)')
+        elif 'GRAB' in Action:
+            if self.__Compass == 'Y':
+                print('The compass is pointing towards something in the dungeon')
+                if triforce == 'Y':
+                    print(self.__CompassDesc2)
+                    input('(Press enter)')
+                else:
+                    print(self.__CompassDesc)
+                    input('(Press enter)')
+                Compass = 'Y'
+                self.__Compass = 'N'
+            elif self.__Map == 'Y':
+                print('\n\nYou pick up the oozing map\n swiping off most of the ooze\n')
+                print('By some strange magic the map seeming flashes where you are in the dungeon.\n')
+                print(self.__MapDesc)
+                DungeonMap = 'Y'
+                self.__Map = 'N'
+        elif 'MAP' in Action:
+            if self.__Map == 'Y':
+                print('\n\nYou pick up the oozing map\n swiping off most of the ooze\n')
+                print('By some strange magic the map seeming flashes where you are in the dungeon.\n')
+                print(self.__MapDesc)
+                DungeonMap = 'Y'
+                self.__Map = 'N'
+            else:
+                if DungeonMap == 'Y':
+                    print(self.__MapDesc)
+                    input('(Press enter)')
+                else:
+                    print("You don't have a Map.\n")
+
+        elif 'COMPASS' in Action:
+            if self.__Compass == 'Y':
+                print('The compass is pointing towards something in the dungeon')
+                if triforce == 'Y':
+                    print(self.__CompassDesc2)
+                    input('(Press enter)')
+                else:
+                    print(self.__CompassDesc)
+                    input('(Press enter)')
+                Compass = 'Y'
+                self.__Compass = 'N'
+            else:    
+                if Compass == 'Y':
+                    if triforce == 'Y':
+                        print(self.__CompassDesc2)
+                        input('(Press enter)')
+                    else:
+                        print(self.__CompassDesc)
+                        input('(Press enter)')
+                else:
+                    print("You don't have a compass.\n")
+        else:
+            print("Sorry We didn't quite get that command. \n"+
+                  "Please rephrase the command.\n")
+        return room
+    def Bomb_room(self,room):
+        if room == self.__RoomNorth:
+            self.__LockNorth = 'N'
+            self.__UNLockNorth = 'B'
+        elif room == self.__RoomSouth:
+            self.__LockSouth = 'N'
+            self.__UNLockSouth = 'B'
+        elif room == self.__RoomEast:
+            self.__LockEast = 'N'
+            self.__UNLockEast = 'B'
+        elif room == self.__RoomWest:
+            self.__LockWest = 'N'
+            self.__UNLockWest = 'B'
+    def Unlock_room(self,room):
+        if room == self.__RoomNorth:
+            self.__LockNorth = 'N'
+            self.__UNLockNorth = 'K'
+        elif room == self.__RoomSouth:
+            self.__LockSouth = 'N'
+            self.__UNLockSouth = 'K'
+        elif room == self.__RoomEast:
+            self.__LockEast = 'N'
+            self.__UNLockEast = 'K'
+        elif room == self.__RoomWest:
+            self.__LockWest = 'N'
+            self.__UNLockWest = 'K'
+    def get_description(self):
+        print(self.__Description)
+        self.__Description = self.__Description_Orig
+    def set_description(self):
+        if self.__Key == 'Y':
+            self.__Description += self.__KeyDesc
+        if self.__Bomb == 'Y':
+            self.__Description += self.__BombDesc
+        if self.__Map == 'Y':
+            self.__Description += self.__maproomdesc
+        if self.__Compass == 'Y':
+            self.__Description += self.__compassroomdesc
+        self.__Description += '\nThe Doors are in these directions. \n\n'
+        if self.__RoomNorth != 'N':
+            if self.__LockNorth == 'B':
+                self.__Description += 'There seems to be cracks in the North wall \n'
+            elif self.__LockNorth == 'K':
+                self.__Description += 'North, But the door seems to be locked \n'
+            elif self.__LockNorth =='Triforce':
+                self.__Description += 'North, But the door seems to be blocked by some magic \n'
+            elif self.__UNLockNorth == 'B':
+                self.__Description += 'The North wall seems to have shattered \n'
+            elif self.__UNLockNorth == 'K':
+                self.__Description += 'North, the key worked perfectly \n'
+            else:
+                self.__Description += 'North \n'
+        if self.__RoomEast != 'N':
+            if self.__LockEast == 'B':
+                self.__Description += 'There seems to be cracks in the East wall \n'
+            elif self.__LockEast == 'K':
+                self.__Description += 'East, But the door seems to be locked \n'
+            elif self.__LockEast == 'Triforce':
+                self.__Description += 'Eas, But the door seems to be blocked by some magic \n'
+            elif self.__UNLockEast == 'B':
+                self.__Description += 'The East wall seems to have shattered \n'
+            elif self.__UNLockEast == 'K':
+                self.__Description += 'East, the key worked perfectly \n'
+            else:
+                self.__Description += 'East \n'
+        if self.__RoomSouth != 'N':
+            if self.__LockSouth == 'B':
+                self.__Description += 'There seems to be cracks in the South wall \n'
+            elif self.__LockSouth == 'K':
+                self.__Description += 'South, But the door seems to be locked \n'
+            elif self.__LockSouth =='Triforce':
+                self.__Description += 'South, But the door seems to be blocked by some magic \n'
+            elif self.__UNLockSouth == 'B':
+                self.__Description += 'The South wall seems to have shattered \n'
+            elif self.__UNLockSouth == 'K':
+                self.__Description += 'South, the key worked perfectly \n'
+            else:
+                self.__Description += 'South \n'
+        if self.__RoomWest != 'N':
+            if self.__LockWest == 'B':
+                self.__Description += 'There seems to be cracks in the West wall \n'
+            elif self.__LockWest == 'K':
+                self.__Description += 'West, But the door seems to be locked \n'
+            elif self.__LockWest =='Triforce':
+                self.__Description += 'West, But the door seems to be blocked by some magic \n'
+            elif self.__UNLockWest == 'B':
+                self.__Description += 'The West wall seems to have shattered \n'
+            elif self.__UNLockWest == 'K':
+                self.__Description += 'West, the key worked perfectly \n'
+            else:
+                self.__Description += 'West \n'
+        if self.__LockSecret == 'N':
+            self.__Description += 'There seems to be a ladder that has been revealed.\n'
+        self.__Description += '\n\n key:'
+        self.__Description += str(key)
+        self.__Description +='\n bomb:'
+        self.__Description += str(bomb)
+
+class BossRoom:
+    def __init__(self,Description,desc2,desc3,Health,Alive,RN,RE,RS,RW,LN,LE,LS,LW,Entrance,Exit,MapDesc,CompassDesc,CompassDesc2):
+        self.__Description_Orig = Description
+        self.__Description = self.__Description_Orig
+        self.__description2 = desc2
+        self.__description3 = desc3
+        self.__Health = Health
+        self.__Alive = Alive
+        self.__RoomNorth = RN
+        self.__RoomEast = RE
+        self.__RoomSouth = RS
+        self.__RoomWest = RW
+        self.__LockNorth = LN
+        self.__LockEast = LE
+        self.__LockSouth = LS
+        self.__LockWest = LW
+        self.__Entrance = Entrance
+        self.__Exit = Exit
+        self.__MapDesc = MapDesc
+        self.__CompassDesc = CompassDesc
+        self.__CompassDesc2 = CompassDesc2
+    def Actions(self,Action,room,triforce):
+        global bomb
+        if 'NORTH' in Action:
+            if self.__RoomNorth != 'N':
+                if self.__LockNorth == 'N':
+                    room = self.__RoomNorth
+                elif self.__LockNorth == 'Y':
+                    print('The door seems to be blocked by some magic. \nYou seem to need some item in the dungeon. \n')
+                    input('(Press enter)')
+            else:
+                print("There doesn't seem to be a door here.")
+                input('(Press enter)')
+        elif 'EAST' in Action:
+            if self.__RoomEast != 'N':
+                if self.__LockEast == 'N':
+                    room = self.__RoomEast
+                elif self.__LockEast =='Y':
+                    print('The door seems to be blocked by some magic. \nYou seem to need some item in the dungeon. \n')
+                    input('(Press enter)')
+            else:
+                print("There doesn't seem to be a door here.")
+                input('(Press enter)')
+        elif 'SOUTH' in Action:
+            if self.__RoomSouth != 'N':
+                if self.__LockSouth == 'N':
+                    room = self.__RoomSouth
+                elif self.__LockSouth =='Y':
+                    print('The door seems to be blocked by some magic. \nYou seem to need some item in the dungeon. \n')
+                    input('(Press enter)')
+            else:
+                print("There doesn't seem to be a door here")
+                input('(Press enter)')
+        elif 'WEST' in Action:
+            if self.__RoomWest != 'N':
+                if self.__LockWest == 'N':
+                    room = self.__RoomWest
+                elif self.__LockWest =='Y':
+                    print('The door seems to be blocked by some magic. \nYou seem to need some item in the dungeon. \n')
+                    input('(Press enter)')
+            else:
+                print("There doesn't seem to be a door here")
+                input('(Press enter)')
+        elif 'MAP' in Action:
+            if DungeonMap == 'Y':
+                    print(self.__MapDesc)
+                    input('(Press enter)')
+            else:
+                print("You don't have a Map.\n")
+
+        elif 'COMPASS' in Action:
+            if Compass == 'Y':
+                if triforce == 'Y':
+                    print(self.__CompassDesc2)
+                    input('(Press enter)')
+                else:
+                    print(self.__CompassDesc)
+                    input('(Press enter)')
+            else:
+                print("You don't have a compass.\n")
+        elif 'MUSIC' in Action or 'WHISTLE' in Action or 'SING':
+            if self.__Alive == 'Y':
+                self.__Health -= 1
+                print('You play for the creature and it starts moving.\n')
+                if self.__Health == 0:
+                    print('The creature fully wakes up and then moves out of the way bashfully.\n')
+                    self.__Alive = 'N'
+                    self.__LockNorth = 'N'
+                    self.__LockEast = 'N'
+                    self.__LockSouth = 'N'
+                    self.__LockWest = 'N'
+                input('(Press enter)\n')
+            else:
+                print('The creature is awake and insanely calm.\n')
+        else:
+            print("Sorry We didn't quite get that command. \n"+
+                  "Please rephrase the command.\n")
+        return room
+    def get_description(self):
+        print(self.__Description)
+        self.__Description = self.__Description_Orig
+    def set_description(self):
+        if self.__Alive == 'Y':
+            self.__Description += self.__description2
+        else:
+            self.__Description += self.__description3
+        self.__Description += '\nThe Doors are in these directions. \n'
+        if self.__RoomNorth != 'N':
+            if self.__LockNorth=='Y':
+                self.__Description += 'North but the magic is blocking your way.\n'
+            else:
+                self.__Description += 'North the magic is gone\n'
+        if self.__RoomEast != 'N':
+            if self.__LockEast=='Y':
+                self.__Description += 'East but the magic is blocking your way.\n'
+            else:
+                self.__Description += 'East the magic is gone\n'
+        if self.__RoomSouth != 'N':
+            if self.__LockSouth=='Y':
+                self.__Description += 'South but the magic is blocking your way.\n'
+            else:
+                self.__Description += 'South the magic is gone\n'
+        if self.__RoomWest != 'N':
+            if self.__LockWest=='Y':
+                self.__Description += 'West but the magic is blocking your way.\n'
+            else:
+                self.__Description += 'West the magic is gone\n'
+
+class TriforceRoom:
+    def __init__(self,Description,RN,RE,RS,RW,Triforce,MapDesc,CompassDesc,CompassDesc2):
+        self.__Description_Orig = Description
+        self.__Description = self.__Description_Orig
+        self.__RoomNorth = RN
+        self.__RoomEast = RE
+        self.__RoomSouth = RS
+        self.__RoomWest = RW
+        self.__triforce = Triforce
+        self.__MapDesc = MapDesc
+        self.__CompassDesc = CompassDesc
+        self.__CompassDesc2 = CompassDesc2
+    def Actions(self,Action,room,triforce):
+        if 'NORTH' in Action:
+            if self.__RoomNorth != 'N':
+                room = self.__RoomNorth
+            else:
+                print("There doesn't seem to be a door here.")
+                input('(Press enter)')
+        elif 'EAST' in Action:
+            if self.__RoomEast != 'N':
+                room = self.__RoomEast
+            else:
+                print("There doesn't seem to be a door here.")
+                input('(Press enter)')
+        elif 'SOUTH' in Action:
+            if self.__RoomSouth != 'N':
+                room = self.__RoomSouth
+            else:
+                print("There doesn't seem to be a door here.")
+                input('(Press enter)')
+        elif 'WEST' in Action:
+            if self.__RoomWest != 'N':
+                room = self.__RoomWest
+            else:
+                print("There doesn't seem to be a door here.")
+                input('(Press enter)')
+        elif 'MAP' in Action:
+            if DungeonMap == 'Y':
+                    print(self.__MapDesc)
+                    input('(Press enter)')
+            else:
+                print("You don't have a Map.\n")
+
+        elif 'COMPASS' in Action:
+            if Compass == 'Y':
+                if triforce == 'Y':
+                    print(self.__CompassDesc2)
+                    input('(Press enter)')
+                else:
+                    print(self.__CompassDesc)
+                    input('(Press enter)')
+            else:
+                print("You don't have a compass.\n")
+        elif 'GRAB' in Action:
+            if self.__triforce=='Y':
+                triforce = 'Y'
+                self.__triforce = 'N'
+                print('You pick up the triforce and feel power leave the dungeon.\n')
+        else:
+            print("Sorry We didn't quite get that command. \n"+
+                  "Please rephrase the command.\n")
+        return room
+    def get_description(self):
+        print(self.__Description)
+        self.__Description = self.__Description_Orig
+    def set_description(self):       
+        if self.__triforce=='Y':
+            self.__Description += '\nThe beauty of the triforce catches your eye \nyou could almost just stay here and watch it.\nThis is why you went to the dugeon.\nBut you have a princess to save You need to grab it to move on.\n'
+        else:
+            self.__Description += 'You see a pedastal that used to contain a triforce.\n'
+        self.__Description += '\nThe Doors is in this direction. \n'
+        if self.__RoomNorth != 'N':
+            self.__Description += 'North \n'
+        if self.__RoomEast != 'N':
+            self.__Description += 'East \n'
+        if self.__RoomSouth != 'N':
+            self.__Description += 'South \n'
+        if self.__RoomWest != 'N':
+            self.__Description += 'West \n'
+
+class SecretRoom:
+    def __init__(self,Description,Secret,Secret2,Item,Took,ItemDescription, TookDescription):
+        self.__Secret = Secret
+        self.__Secret2 = Secret2
+        self.__Description_Orig = Description
+        self.__Description = self.__Description_Orig
+        self.__Item = Item
+        self.__Took = Took
+        self.__ItemDescription = ItemDescription
+        self.__TookDescription = TookDescription
+    def Actions(self,Action,room,triforce):
+        global Whistle
+        if 'NORTH' in Action:
+            print("There doesn't seem to be a door here.\n")
+            input('(Press enter)')
+        elif 'EAST' in Action:
+            print("There doesn't seem to be a door here.\n")
+            input('(Press enter)')
+        elif 'SOUTH' in Action:
+            print("There doesn't seem to be a door here.\n")
+            input('(Press enter)')
+        elif 'WEST' in Action:
+            print("There doesn't seem to be a door here.\n")
+            input('(Press enter)')
+        elif 'GRAB' in Action:
+            if self.__Item == 'Y':
+                self.__Item = 'N'
+                self.__Took = 'Y'
+                print(self.__TookDescription)
+                Whistle = 'Y'
+                input('(Press Enter)')
+        elif 'MAP' in Action:
+            print("The map doesn't seem to show where you are.\n")
+        elif 'COMPASS' in Action:
+            print("The compass is useless.\n")
+        elif 'LADDER' in Action:
+            if '1' in Action or 'ONE' in Action:
+                room = self.__Secret
+            if '2' in Action or 'TWO' in Action:
+                room = self.__Secret2
+            else:
+                room = self.__Secret
+        else:
+            print("Sorry We didn't quite get that command. \n"+
+                  "Please rephrase the command.\n")
+        return room
+    def get_description(self):
+        print(self.__Description)
+        self.__Description = self.__Description_Orig
+    def set_description(self):
+        if self.__Item == 'Y':
+            self.__Description += self.__ItemDescription
+        else:
+            if self.__Took == 'Y':
+                self.__Description += 'A pedastal that held an Item.'
+ 
+R1 = Room("When walking into the room you see 12 wyvern statues,\nThey are cool but not as cool as the dragon.\n",
+            5,2,'end','N',
+           'N','N','Triforce','N','N','N','N','N',
+           'N','\n','\n\n +1 Key \n\n','Y','A bomb exists in the grasp of a wyvern. \n','You pull it out.\n\n +1 bomb \n\n',
+           'POWER','Y',26,
+           'N','',
+            '   [ ][ ]\n'+
+            '[ ][ ][ ][ ]\n'+
+            '[ ][ ][ ][ ]\n'+
+            '[ ]      [ ]\n'+
+            '      [ ][ ]\n'+
+            '   [ ][ ][ ]\n'+
+            '[ ][ ][ ][ ]\n'+
+            '      [x][ ]\n',
+           'N','','The compass seems to be pointing to the NorthEast.\n','The compass points towards the South.\n')
+R2 = Room("When walking into the room you see lots of foxes it is adorable.\n"
+           ,6,'N','N',1,
+           'B','N','N','N','N','N','N','N',
+           'Y','One of them is playing with the key,\n you might have to play with them.\n','You play with the foxes until one of them leaves the key on the floor.\n you take it.\n\n +1 Key \n\n','N','\n','\n\n +1 bomb \n\n',
+           'N','Y','N',
+           'N','',
+            '   [ ][ ]\n'+
+            '[ ][ ][ ][ ]\n'+
+            '[ ][ ][ ][ ]\n'+
+            '[ ]      [ ]\n'+
+            '      [ ][ ]\n'+
+            '   [ ][ ][ ]\n'+
+            '[ ][ ][ ][ ]\n'+
+            '      [ ][x]\n',
+           'N','','The compass seems to be pointing to the NorthEast.\n','The compass points towards the Southwest.\n')
+R3 = Room("When walking into the room you see lots of suits of armor.\n"
+           ,'N',4,'N','N',
+           'N','B','N','N','N','N','N','N',
+           'N','\n','\n\n +1 Key \n\n','N','\n','\n\n +1 bomb \n\n',
+           'N','N',24,
+           'N','',
+            '   [ ][ ]\n'+
+            '[ ][ ][ ][ ]\n'+
+            '[ ][ ][ ][ ]\n'+
+            '[ ]      [ ]\n'+
+            '      [ ][ ]\n'+
+            '   [ ][ ][ ]\n'+
+            '[x][ ][ ][ ]\n'+
+            '      [ ][ ]\n',
+           'N','','The compass seems to be pointing to the North.\n','The compass points towards the SouthEast.\n')
+R4 = Room("When walking into the room you see some mummys.\n"
+           ,7,5,'N',3,
+           'N','B','N','B','N','N','N','N',
+           'N','\n','\n\n +1 Key \n\n','Y','You see a piece of tnt near one.\n','Hopefully the mummies curse does not count for the bombs.\n\n +1 bomb \n\n',
+           'N','Y','N',
+           'N','',
+            '   [ ][ ]\n'+
+            '[ ][ ][ ][ ]\n'+
+            '[ ][ ][ ][ ]\n'+
+            '[ ]      [ ]\n'+
+            '      [ ][ ]\n'+
+            '   [ ][ ][ ]\n'+
+            '[ ][x][ ][ ]\n'+
+            '      [ ][ ]\n',
+           'N','','The compass seems to be pointing to the North.\n','The compass points towards the South.\n')
+R5 = Room("When walking into the room you see some mummys.\nAnd a river through the middle\n"
+           ,7,6,1,4,
+           'N','K','N','B','N','N','N','N',
+           'Y','You see a key near one.\n','Hopefully the mummies curse does not count for the bombs.\n\n +1 Key \n\n','N','\n','\n\n +1 bomb \n\n',
+           'N','Y','N',
+           'N','',
+            '   [ ][ ]\n'+
+            '[ ][ ][ ][ ]\n'+
+            '[ ][ ][ ][ ]\n'+
+            '[ ]      [ ]\n'+
+            '      [ ][ ]\n'+
+            '   [ ][ ][ ]\n'+
+            '[ ][ ][x][ ]\n'+
+            '      [ ][ ]\n',
+           'N','','The compass seems to be pointing to the NorthWest.\n','The compass points towards the South.\n')
+R6 = Room("When walking in you see an old man in the corner.\nThe old man smiles as you aproach him.\n"+
+    "before casting spells from his hands.\nThe whole room falls away as he whispers in your ears. \n\nYou have to sing for a good boss.\n\n"+
+    "The room fades back into existance.\nAs the old man fades out of existance.\nWhat just happened?\n"
+           ,'N','N',2,5,
+           'N','N','B','K','N','N','N','N',
+           'N','\n','\n\n +1 Key \n\n','N','\n','\n\n +1 bomb \n\n',
+           'N','Y','N',
+           'N','\n',
+            '   [ ][ ]\n'+
+            '[ ][ ][ ][ ]\n'+
+            '[ ][ ][ ][ ]\n'+
+            '[ ]      [ ]\n'+
+            '      [ ][ ]\n'+
+            '   [ ][ ][ ]\n'+
+            '[ ][ ][ ][x]\n'+
+            '      [ ][ ]\n',
+           'N','','The compass seems to be pointing to the NorthWest.\n','The compass points towards the South.\n')
+R7 = Room("When walking into the room you see alot of slimes.\nThe slimes seem playful\n"
+           ,'N',8,4,'N',
+           'N','N','N','N','N','N','N','N',
+           'Y','You see a key near one.\nThey seem to ignore it.\n','it was gooey  apparently they got bored of it.\n\n +1 Key \n\n','N','\n','\n\n +1 bomb \n\n',
+           'N','Y','N',
+           'N','',
+            '   [ ][ ]\n'+
+            '[ ][ ][ ][ ]\n'+
+            '[ ][ ][ ][ ]\n'+
+            '[ ]      [ ]\n'+
+            '      [ ][ ]\n'+
+            '   [x][ ][ ]\n'+
+            '[ ][ ][ ][ ]\n'+
+            '      [ ][ ]\n',
+           'N','','The compass seems to be pointing to the North.\n','The compass points towards the South.\n')
+R8 = Room("When walking into the room you see child dodongos.\n"
+           ,10,9,5,7,
+           'K','N','N','N','N','N','N','N',
+           'N','\n','\n\n +1 Key \n\n','Y','Apparently someone wanted to kill them.\nThey placed a piece of tnt next to one.\n','You grabbed it \n\n +1 bomb \n\n',
+           'N','Y','N',
+           'N','',
+            '   [ ][ ]\n'+
+            '[ ][ ][ ][ ]\n'+
+            '[ ][ ][ ][ ]\n'+
+            '[ ]      [ ]\n'+
+            '      [ ][ ]\n'+
+            '   [ ][x][ ]\n'+
+            '[ ][ ][ ][ ]\n'+
+            '      [ ][ ]\n',
+           'N','','The compass seems to be pointing to the NorthWest.\n','The compass points towards the South.\n')
+R9 = Room("When walking into the room you see small slimes.\nThey seem to be sleeping.\n"
+           ,11,'N','N',8,
+           'N','N','N','N','N','N','N','N',
+           'N','\n','\n\n +1 Key \n\n','N','\n','\n\n +1 bomb \n\n',
+           'N','Y','N',
+           'N','',
+            '   [ ][ ]\n'+
+            '[ ][ ][ ][ ]\n'+
+            '[ ][ ][ ][ ]\n'+
+            '[ ]      [ ]\n'+
+            '      [ ][ ]\n'+
+            '   [ ][ ][x]\n'+
+            '[ ][ ][ ][ ]\n'+
+            '      [ ][ ]\n',
+           'N','','The compass seems to be pointing to the NorthWest.\n','The compass points towards the South.\n')
+R10 = Room("When walking into the room you see an island.\n"
+           ,'N',11,8,'N',
+           'N','N','K','N','N','N','N','N',
+           'N','\n','\n\n +1 Key \n\n','N','\n','\n\n +1 bomb \n\n',
+           'N','Y','N',
+           'Y','There is a map of the dungeon on the island.',
+            '   [ ][ ]\n'+
+            '[ ][ ][ ][ ]\n'+
+            '[ ][ ][ ][ ]\n'+
+            '[ ]      [ ]\n'+
+            '      [x][ ]\n'+
+            '   [ ][ ][ ]\n'+
+            '[ ][ ][ ][ ]\n'+
+            '      [ ][ ]\n',
+           'N','','The compass seems to be pointing to the NorthWest.\n','The compass points towards the South.\n')
+R11 = Room("When walking into the room you see mummies getting drowned in water.\n"
+           ,13,'N',9,10,
+           'N','N','N','N','N','N','N','N',
+           'Y','You see a key near one.\n','Hopefully the mummies curse does not count for the Keys.\n\n +1 Key \n\n','N','\n','\n\n +1 bomb \n\n',
+           'N','Y','N',
+           'N','',
+            '   [ ][ ]\n'+
+            '[ ][ ][ ][ ]\n'+
+            '[ ][ ][ ][ ]\n'+
+            '[ ]      [ ]\n'+
+            '      [ ][x]\n'+
+            '   [ ][ ][ ]\n'+
+            '[ ][ ][ ][ ]\n'+
+            '      [ ][ ]\n',
+           'N','','The compass seems to be pointing to the NorthWest.\n','The compass points towards the South.\n')
+R12 = Room("When walking into the room you see mummies\n"
+           ,14,'N','N','N',
+           'N','N','N','N','N','N','N','N',
+           'N','\n','\n\n +1 Key \n\n','N','\n','\n\n +1 bomb \n\n',
+           'N','Y','N',
+           'N','',
+            '   [ ][ ]\n'+
+            '[ ][ ][ ][ ]\n'+
+            '[ ][ ][ ][ ]\n'+
+            '[x]      [ ]\n'+
+            '      [ ][ ]\n'+
+            '   [ ][ ][ ]\n'+
+            '[ ][ ][ ][ ]\n'+
+            '      [ ][ ]\n',
+           'N','','The compass seems to be pointing to the North.\n','The compass points towards the SouthEast.\n')
+R13 = Room("When walking into the room you see suits of armor.\n"
+           ,17,'N',11,'N',
+           'N','N','N','N','N','N','N','N',
+           'N','\n','\n\n +1 Key \n\n','N','\n','\n\n +1 bomb \n\n',
+           'N','Y','N',
+           'N','',
+            '   [ ][ ]\n'+
+            '[ ][ ][ ][ ]\n'+
+            '[ ][ ][ ][ ]\n'+
+            '[ ]      [x]\n'+
+            '      [ ][ ]\n'+
+            '   [ ][ ][ ]\n'+
+            '[ ][ ][ ][ ]\n'+
+            '      [ ][ ]\n',
+           'Y','One of the suits is holding a compass out to you.\n','The compass seems to be pointing to the north west.\n','The compass points towards the South.\n')
+R14 = BossRoom('You walk into the room \n',
+    "The floor was insanely warm,\nThe creature seems to be sleeping on the floor.\nIt needs to be awoken for you to get to the triforce.\n",
+               "The creature is now sleeping elsewhere.\n",4,'Y',
+            18,15,12,'N',
+            'Y','Y','N','N',
+            'East','North',
+                '   [ ][ ]\n'+
+                '[ ][ ][ ][ ]\n'+
+                '[x][ ][ ][ ]\n'+
+                '[ ]      [ ]\n'+
+                '      [ ][ ]\n'+
+                '   [ ][ ][ ]\n'+
+                '[ ][ ][ ][ ]\n'+
+                '      [ ][ ]\n',
+            'The compass seems to be pointing to the North.\n','The compass points towards the SouthEast.')
+R15 = Room("When walking into the room you see more foxes.\n"
+           ,19,16,'N',14,
+           'B','N','N','I','N','N','N','N',
+           'N','\n','\n\n +1 Key \n\n','N','\n','\n\n +1 bomb \n\n',
+           'N','Y','N',
+           'N','',
+            '   [ ][ ]\n'+
+            '[ ][ ][ ][ ]\n'+
+            '[ ][x][ ][ ]\n'+
+            '[ ]      [ ]\n'+
+            '      [ ][ ]\n'+
+            '   [ ][ ][ ]\n'+
+            '[ ][ ][ ][ ]\n'+
+            '      [ ][ ]\n',
+           'N','\n','The compass seems to be pointing to the Northwest.\n','The compass points towards the South.\n')
+R16 = Room("When walking into the room you see more mummies.\nThey might be called Gibdos?\n"
+           ,'N',17,'N',15,
+           'N','K','N','N','N','N','N','N',
+           'Y','A "Gibdo" holds a key for you\n','you grab it.\n\n +1 Key \n\n','N','\n','\n\n +1 bomb \n\n',
+           'N','Y','N',
+           'N','',
+            '   [ ][ ]\n'+
+            '[ ][ ][ ][ ]\n'+
+            '[ ][ ][x][ ]\n'+
+            '[ ]      [ ]\n'+
+            '      [ ][ ]\n'+
+            '   [ ][ ][ ]\n'+
+            '[ ][ ][ ][ ]\n'+
+            '      [ ][ ]\n',
+           'N','\n','The compass seems to be pointing to the west.\n','The compass points towards the South.\n')
+R17 = Room("Foxes are playing with the mummies\n"
+           ,'N',13,'N',16,
+           'N','K','N','N','N','N','N','N',
+           'Y','A mummy apparently had a key it is now on the floor.\n','you grab it.\n\n +1 Key \n\n','N','\n','\n\n +1 bomb \n\n',
+           'N','Y','N',
+           'N','',
+            '   [ ][ ]\n'+
+            '[ ][ ][ ][ ]\n'+
+            '[ ][ ][ ][x]\n'+
+            '[ ]      [ ]\n'+
+            '      [ ][ ]\n'+
+            '   [ ][ ][ ]\n'+
+            '[ ][ ][ ][ ]\n'+
+            '      [ ][ ]\n',
+           'N','\n','The compass seems to be pointing to the west.\n','The compass points towards the South.\n')
+R18 = TriforceRoom("When walking into the room ",
+            'N','N',14,'N','Y',
+            '   [ ][ ]\n'+
+            '[x][ ][ ][ ]\n'+
+            '[ ][ ][ ][ ]\n'+
+            '[ ]      [ ]\n'+
+            '      [ ][ ]\n'+
+            '   [ ][ ][ ]\n'+
+            '[ ][ ][ ][ ]\n'+
+            '      [ ][ ]\n',
+            'It swirls around alot\n','It swirls around a lot\n')
+R19 = Room("When walking in you see an old man in the corner.\nThe old man smiles as you aproach him.\n"+
+    "before casting spells from his hands.\nThe whole room falls away as he whispers in your ears. \n\nSecret POWER!!!!!! is said to be in an arrow.\n\n"+
+    "The room fades back into existance.\nAs the old man fades out of existance.\nWhat just happened?\n"
+           ,'N','N',15,'N',
+           'N','N','B','N','N','N','N','N',
+           'N','\n','\n\n +1 Key \n\n','N','\n','\n\n +1 bomb \n\n',
+           'N','Y','N',
+           'N','\n',
+            '   [ ][ ]\n'+
+            '[ ][x][ ][ ]\n'+
+            '[ ][ ][ ][ ]\n'+
+            '[ ]      [ ]\n'+
+            '      [ ][ ]\n'+
+            '   [ ][ ][ ]\n'+
+            '[ ][ ][ ][ ]\n'+
+            '      [ ][ ]\n',
+           'N','','The compass seems to be pointing to the West.\n','The compass points towards the South.\n')
+R20 = Room("Bats are the only thing you can see in this room\n"
+           ,23,21,'N','N',
+           'K','B','N','N','N','N','N','N',
+           'Y','That and a key.\n','you grab it.\n\n +1 Key \n\n','N','\n','\n\n +1 bomb \n\n',
+           'N','Y','N',
+           'N','',
+            '   [ ][ ]\n'+
+            '[ ][ ][x][ ]\n'+
+            '[ ][ ][ ][ ]\n'+
+            '[ ]      [ ]\n'+
+            '      [ ][ ]\n'+
+            '   [ ][ ][ ]\n'+
+            '[ ][ ][ ][ ]\n'+
+            '      [ ][ ]\n',
+           'N','\n','The compass seems to be pointing to the west.\n','The compass points towards the South.\n')
+R21 = Room("When walking in you see an old man in the corner.\nThe old man smiles as you aproach him.\n"+
+    "before casting spells from his hands.\nThe whole room falls away as he whispers in your ears. \n\nThey like singing normally\n\n"+
+    "The room fades back into existance.\nAs the old man fades out of existance.\nWhat just happened?\n"
+           ,'N','N','N',20,
+           'N','N','N','B','N','N','N','N',
+           'N','\n','\n\n +1 Key \n\n','N','\n','\n\n +1 bomb \n\n',
+           'N','Y','N',
+           'N','\n',
+            '   [ ][ ]\n'+
+            '[ ][ ][ ][x]\n'+
+            '[ ][ ][ ][ ]\n'+
+            '[ ]      [ ]\n'+
+            '      [ ][ ]\n'+
+            '   [ ][ ][ ]\n'+
+            '[ ][ ][ ][ ]\n'+
+            '      [ ][ ]\n',
+           'N','','The compass seems to be pointing to the West.\n','The compass points towards the South.\n')
+R22 = Room("Lots and lots of armor.\n"
+           ,'N',23,'N','N',
+           'N','K','N','N','N','N','N','N',
+           'N','\n','\n\n +1 Key \n\n','N','\n','\n\n +1 bomb \n\n',
+           'N','N',25,
+           'N','',
+            '   [x][ ]\n'+
+            '[ ][ ][ ][ ]\n'+
+            '[ ][ ][ ][ ]\n'+
+            '[ ]      [ ]\n'+
+            '      [ ][ ]\n'+
+            '   [ ][ ][ ]\n'+
+            '[ ][ ][ ][ ]\n'+
+            '      [ ][ ]\n',
+           'N','\n','The compass seems to be pointing to the Southwest.\n','The compass points towards the South.\n')
+R23 = Room("Nothing is really in the room.\n"
+           ,'N','N',20,22,
+           'N','N','K','K','N','N','N','N',
+           'N','\n','\n\n +1 Key \n\n','N','\n','\n\n +1 bomb \n\n',
+           'N','N',24,
+           'N','',
+            '   [ ][x]\n'+
+            '[ ][ ][ ][ ]\n'+
+            '[ ][ ][ ][ ]\n'+
+            '[ ]      [ ]\n'+
+            '      [ ][ ]\n'+
+            '   [ ][ ][ ]\n'+
+            '[ ][ ][ ][ ]\n'+
+            '      [ ][ ]\n',
+           'N','\n','The compass seems to be pointing to the west.\n','The compass points towards the South.\n')
+SS1 = SecretRoom("When climbing down into the room\nYou see 2 ladders\nthis room is a secret Tunnel.\n",10,23,'N','N','N/A','N/A\n')
+SS2 = SecretRoom("When climbing down into the room\n",22,22,'Y','N','There is a Whistle on a pedastal.\n','The Whistle is of a metal.\n')
+SS3 = SecretRoom("Congratulations you found the 5th secret.\nHave yourself a cookie.\n",1,1,'N','N','N/A\n','N/A')
+Whistle='N'
+room = 2
+done1 = 'N'
+Ladder='N'
+bomb = 0
+key = 0
+triforce = 'N'
+DungeonMap = 'N'
+Compass = 'N'
+def Actions(room):
+    while done1 == 'N':
+        print()
+        describe_room(room)
+        print()
+        Action = input('What do you do? \n')
+        Action = Action.upper()
+        room = what_room_in(Action,room,triforce)
+
+def what_room_in(Action,room,triforce):
+    if 'QUIT'in Action:
+        global done1
+        done1 = 'Y'
+    if room == 1:
+        room = R1.Actions(Action,room,triforce)
+        return room
+    elif room == 2:
+        room = R2.Actions(Action,room,triforce)
+        return room
+    elif room == 3:
+        room = R3.Actions(Action,room,triforce)
+        return room
+    elif room == 4:
+        room = R4.Actions(Action,room,triforce)
+        return room
+    elif room == 5:
+        room = R5.Actions(Action,room,triforce)
+        return room
+    elif room == 6:
+        room = R6.Actions(Action,room,triforce)
+        return room
+    elif room == 7:
+        room = R7.Actions(Action,room,triforce)
+        return room
+    elif room == 8:
+        room = R8.Actions(Action,room,triforce)
+        return room
+    elif room == 9:
+        room = R9.Actions(Action,room,triforce)
+        return room
+    elif room == 10:
+        room = R10.Actions(Action,room,triforce)
+        return room
+    elif room == 11:
+        room = R11.Actions(Action,room,triforce)
+        return room
+    elif room == 12:
+        room = R12.Actions(Action,room,triforce)
+        return room
+    elif room == 13:
+        room = R13.Actions(Action,room,triforce)
+        return room
+    elif room == 14:
+        room = R14.Actions(Action,room,triforce)
+        return room
+    elif room == 15:
+        room = R15.Actions(Action,room,triforce)
+        return room
+    elif room == 16:
+        room = R16.Actions(Action,room,triforce)
+        return room
+    elif room == 17:
+        room = R17.Actions(Action,room,triforce)
+        return room
+    elif room == 18:
+        room = R18.Actions(Action,room,triforce)
+        return room
+    elif room == 19:
+        room = R19.Actions(Action,room,triforce)
+        return room
+    elif room == 20:
+        room = R20.Actions(Action,room,triforce)
+        return room
+    elif room == 21:
+        room = R21.Actions(Action,room,triforce)
+        return room
+    elif room == 22:
+        room = R22.Actions(Action,room,triforce)
+        return room
+    elif room == 23:
+        room = R23.Actions(Action,room,triforce)
+        return room
+    elif room == 24:
+        room = SS1.Actions(Action,room,triforce)
+        return room
+    elif room == 25:
+        room = SS2.Actions(Action,room,triforce)
+        return room
+    elif room == 26:
+        room = SS3.Actions(Action,room,triforce)
+        return room
+    elif room == 'end':
+        done = 'Y'
+        return done
+    else:
+        print ('crap something went wrong')
+        return room
+
+def describe_room(room):
+    if room == 1:
+        R1.set_description()
+        R1.get_description()
+    elif room == 2:
+        R2.set_description()
+        R2.get_description()
+    elif room == 3:
+        R3.set_description()
+        R3.get_description()
+    elif room == 4:
+        R4.set_description()
+        R4.get_description()
+    elif room == 5:
+        R5.set_description()
+        R5.get_description()
+    elif room == 6:
+        R6.set_description()
+        R6.get_description()
+    elif room == 7:
+        R7.set_description()
+        R7.get_description()
+    elif room == 8:
+        R8.set_description()
+        R8.get_description()
+    elif room == 9:
+        R9.set_description()
+        R9.get_description()
+    elif room == 10:
+        R10.set_description()
+        R10.get_description()
+    elif room == 11:
+        R11.set_description()
+        R11.get_description()
+    elif room == 12:
+        R12.set_description()
+        R12.get_description()
+    elif room == 13:
+        R13.set_description()
+        R13.get_description()
+    elif room == 14:
+        R14.set_description()
+        R14.get_description()
+    elif room == 15:
+        R15.set_description()
+        R15.get_description()
+    elif room == 16:
+        R16.set_description()
+        R16.get_description()
+    elif room == 17:
+        R17.set_description()
+        R17.get_description()
+    elif room == 18:
+        R18.set_description()
+        R18.get_description()
+    elif room == 19:
+        R19.set_description()
+        R19.get_description()
+    elif room == 20:
+        R20.set_description()
+        R20.get_description()
+    elif room == 21:
+        R21.set_description()
+        R21.get_description()
+    elif room == 22:
+        R22.set_description()
+        R22.get_description()
+    elif room == 23:
+        R23.set_description()
+        R23.get_description()
+    elif room == 24:
+        SS1.set_description()
+        SS1.get_description()
+    elif room == 25:
+        SS2.set_description()
+        SS2.get_description()
+    elif room == 26:
+        SS3.set_description()
+        SS3.get_description()
+    elif room == 'end':
+        global done1
+        done1 = 'Y'
+        print()
+def Bomb(Action,room):
+    if room == 2:
+        if 'NORTH' in Action:
+            R3.Bomb_room(room)
+    elif room == 3:
+        if 'EAST' in Action:
+            R4.Bomb_room(room)
+    elif room == 4:
+        if 'EAST' in Action:
+            R5.Bomb_room(room)
+        if 'WEST' in Action:
+            R3.Bomb_room(room)
+    elif room == 5:
+        if 'WEST' in Action:
+            R4.Bomb_room(room)
+    elif room == 6:
+        if 'SOUTH' in Action:
+            R2.Bomb_room(room)
+    elif room == 15:
+        if 'NORTH' in Action:
+            R19.Bomb_room(room)
+    elif room == 19:
+        if 'SOUTH' in Action:
+            R15.Bomb_room(room)
+    elif room == 20:
+        if 'EAST' in Action:
+            R21.Bomb_room(room)
+    elif room == 21:
+        if 'WEST' in Action:
+            R20.Bomb_room(room)
+def Unlock(Action,room):
+    if room == 5:
+        if 'EAST' in Action:
+            R6.Unlock_room(room)
+    elif room == 6:
+        if 'WEST' in Action:
+            R5.Unlock_room(room)
+    elif room == 8:
+        if 'NORTH' in Action:
+            R10.Unlock_room(room)
+    elif room == 10:
+        if 'SOUTH' in Action:
+            R8.Unlock_room(room)
+    elif room == 16:
+        if 'EAST' in Action:
+            R17.Unlock_room(room)
+    elif room == 17:
+        if 'WEST' in Action:
+            R16.Unlock_room(room)
+    elif room == 20:
+        if 'NORTH' in Action:
+            R22.Unlock_room(room)
+    elif room == 22:
+        if 'EAST' in Action:
+            R23.Unlock_room(room)
+    elif room == 23:
+        if 'SOUTH' in Action:
+            R20.Unlock_room(room)
+        if 'WEST' in Action:
+            R22.Unlock_room(room)
+print('\nLONK\nDungeon:4\n\n')
+print('(Type the word menu for a guide to actions you can take.)\n\n')
+Actions(room)
